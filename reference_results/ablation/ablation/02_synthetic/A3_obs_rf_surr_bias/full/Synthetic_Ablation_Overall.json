@@ -1,0 +1,20 @@
+{
+  "case_name": "A3_obs_rf_surr_bias",
+  "mode": "full",
+  "truth_count": 3,
+  "parameter_95_HDI_hits": 18,
+  "parameter_95_HDI_total": 18,
+  "parameter_95_HDI_coverage_percent": 100.0,
+  "synthetic_observation_PP95_coverage_percent": 100.0,
+  "raw_Abaqus_PP95_coverage_percent": 100.0,
+  "mean_MAP_RMSE_to_observation_m": 1.209396598310246,
+  "mean_MAP_RMSE_to_raw_Abaqus_m": 1.2462885543283388,
+  "mean_PP95_width_m": 10.095202428184349,
+  "mean_HDI95_width_contraction": 0.2352249773948305,
+  "mean_posterior_SD_ratio_to_prior_SD": 0.7819291073510792,
+  "mean_acceptance_fraction": 0.3279569791666667,
+  "max_split_Rhat": 1.0053073646203359,
+  "max_rank_normalized_split_Rhat": 1.0048566267603567,
+  "min_ESS": 12991.218331850747,
+  "all_convergence_pass": true
+}

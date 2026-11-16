@@ -1,0 +1,49 @@
+{
+  "n_walkers": 64,
+  "n_steps": 50000,
+  "burn_in": 10000,
+  "postburn_samples": 2560000,
+  "acceptance_fraction": 0.2811790625,
+  "max_split_rhat": 1.008619023366221,
+  "max_rank_normalized_split_rhat": 1.0080109370946813,
+  "min_ess": 9547.838991571502,
+  "convergence_target": "max split-Rhat < 1.01 and min ESS > 3000",
+  "convergence_pass": true,
+  "sigma_obs_m": 0.5,
+  "sigma_rep_prior": "HalfNormal(scale=10 m)",
+  "map_head_rmse_m": 12.945723552884408,
+  "map_head_mae_m": 10.18337858077635,
+  "median_parameter_head_rmse_m": 13.150436670819571,
+  "median_parameter_head_mae_m": 10.187451469374308,
+  "posterior_predictive_95_coverage_percent": 95.65217391304348,
+  "mean_rf_std_m": 1.3264288837522284,
+  "mean_surrogate_std_m": 1.6050135013440936,
+  "mean_surrogate_bias_m": 0.07208270674360265,
+  "production_model": "GroupMean_DNN_All50_CorrectedRF_253epochs.pth",
+  "prior_bounds": {
+    "log10_K_Lower": [
+      -9.0,
+      -7.0
+    ],
+    "log10_K_Middle": [
+      -8.0,
+      -6.0
+    ],
+    "log10_K_Upper": [
+      -7.0,
+      -5.0
+    ],
+    "COV": [
+      0.4,
+      1.0
+    ],
+    "dh": [
+      50.0,
+      300.0
+    ],
+    "dv": [
+      1.0,
+      5.0
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "synthetic_cases_found": [
+    "A0_obs_only",
+    "A1_obs_rf",
+    "A2_obs_rf_surr",
+    "A3_obs_rf_surr_bias"
+  ],
+  "field_cases_found": [
+    "A0_obs_only",
+    "A1_obs_rf",
+    "A2_obs_rf_surr",
+    "A3_obs_rf_surr_bias",
+    "A4_full_sigma_rep"
+  ],
+  "synthetic_complete": true,
+  "field_complete": true,
+  "all_convergence_pass": false
+}
