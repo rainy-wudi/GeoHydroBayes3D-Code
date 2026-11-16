@@ -1,257 +1,103 @@
-# Surrogate-assisted Bayesian inversion of 3D hydraulic conductivity fields
+# GeoHydroBayes3D
 
-This repository contains the publicly shareable Python and MATLAB implementation accompanying the manuscript:
+Code accompanying **Bayesian Inversion of Geostatistical Hyperparameters for Three-Dimensional Seepage with Limited Hydraulic-Head Observations and Multiple Error Sources**.
 
-**Surrogate-assisted Bayesian inversion of three-dimensional heterogeneous hydraulic conductivity fields on unstructured geoscience meshes**
+Authors: Yucheng Wu, Chunhui Ma, Jie Yang, Ibrokhimov Khofiz and Lin Cheng.
 
-The repository demonstrates the main computational components developed and used in the study:
+Corresponding author: Dr. Chunhui Ma; shanximachunhui@foxmail.com; +86 18700917478.
 
-1. preparation of machine-learning datasets from model parameters and hydraulic-head responses;
-2. KD-tree mapping between unstructured geoscience-mesh centroids and hydraulic-conductivity fields;
-3. training of a physics-enhanced deep neural-network surrogate, referred to as PA-DNN;
-4. comparison with Random Forest and Support Vector Regression baseline models;
-5. Bayesian inversion of hydraulic-conductivity and geostatistical parameters using trained surrogate models;
-6. global sensitivity analysis and generation of demonstration figures;
-7. MATLAB-based stratified random-field generation and generic Abaqus input-file preparation.
+Repository: https://github.com/rainy-wudi/GeoHydroBayes3D-Code
 
-## Confidentiality and reproducibility scope
+## Purpose
 
-The original engineering dataset used in the associated study cannot be made publicly available because it contains confidential project information and is subject to third-party data-use restrictions.
+This package implements the manuscript's conditional group-mean DNN and Bayesian inversion with separate observation, random-field, surrogate and field representation errors. It contains the 50 parameter groups × 20 random-field realizations database, observations at 23 boreholes, the frozen 35/7/8 group split, independent-test and all-50 production networks, scalers, OOF bias/covariance estimates, three independent synthetic validation cases and likelihood-ablation scripts. Code and comments are in English. Numerical outputs are saved as CSV and JSON files.
 
-This repository therefore provides a **fully synthetic demonstration dataset** designed solely to verify the software implementation and demonstrate the complete computational workflow.
-
-The synthetic dataset:
-
-* does not contain original engineering measurements;
-* does not contain original site coordinates, borehole locations, geological geometry, or monitoring records;
-* does not contain proprietary finite-element outputs, Abaqus result files, or project-specific generated `.inp` files;
-* is not produced by directly anonymizing or rescaling the original confidential dataset;
-* uses representative synthetic inputs and responses that are compatible with the public workflow.
-
-The public package supports independent verification of the code structure, algorithms, and end-to-end computational workflow. However, it cannot be used to exactly reproduce the site-specific numerical results presented in the manuscript.
-
-## Repository structure
-
-```text
-GeoHydroBayes3D/
-|-- README.md
-|-- LICENSE
-|-- requirements.txt
-|-- environment.yml
-|-- configs/                          # example YAML configuration files
-|-- data/                             # synthetic demonstration data only
-|   |-- Final_ML_Dataset.csv
-|   `-- README_demo_dataset.md
-|-- docs/
-|   |-- installation.md
-|   |-- workflow.md
-|   `-- code_availability_statement.md
-|-- examples/
-|   `-- minimal_reproduction/
-|-- legacy/                           # archived non-confidential compatibility scripts
-|-- matlab_random_field_generation/   # generic MATLAB random-field and Abaqus workflow
-|-- metadata/
-|   |-- data_dictionary.csv
-|   `-- code_package_manifest.md
-|-- outputs/                          # generated outputs; ignored except README
-|-- scripts/                          # command-line workflow scripts
-|-- src/
-|   `-- hydro_inverse/                # reusable Python package
-`-- tests/                            # lightweight integrity tests
-```
-
-Only non-confidential source code, synthetic demonstration data, and generic configuration examples are included in this public repository.
+The repository includes the engineering data, observations and trained models used in the study, released with the authors' permission.
 
 ## Installation
 
-A clean Python 3.10 or later environment is recommended.
+Python 3.12 is recommended (release checks used Python 3.12.7 on Windows, an Intel Core i7-14700KF and 32 GB RAM). A CPU is sufficient; CUDA is optional. This tested hardware is not a measured minimum requirement. Leave sufficient disk space for posterior CSV files: the unthinned field chain alone can approach 400 MB. MATLAB random-field generation requires substantially more memory than surrogate prediction.
 
-Using Conda:
-
-```bash
-conda env create -f environment.yml
-conda activate hydro-inverse
-pip install -e .
-```
-
-Alternatively, using Python virtual environments:
+Create a dedicated environment and install the pinned numerical dependencies:
 
 ```bash
 python -m venv .venv
-
-# Windows
+# Windows:
 .venv\Scripts\activate
-
-# Linux/macOS
-source .venv/bin/activate
-
-pip install -r requirements.txt
-pip install -e .
+# Linux/macOS:
+# source .venv/bin/activate
+python -m pip install -r requirements.txt
 ```
 
-Detailed installation instructions are provided in:
+The pretrained scikit-learn scalers were saved with scikit-learn 1.6.1. Load only trusted model artifacts. MATLAB with Statistics and Machine Learning Toolbox and a licensed Abaqus installation are needed only to regenerate finite-element results. The archived solver log identifies Abaqus/Standard 2024; MATLAB version information was not retained. Neither proprietary solver is distributed.
 
-```text
-docs/installation.md
-```
+## Quick checks
 
-## Quick start
-
-Run the minimal end-to-end demonstration using the synthetic dataset:
+From the repository root:
 
 ```bash
-python examples/minimal_reproduction/run_demo.py
+python validate_data.py
+python validate_model.py
 ```
 
-The demonstration performs the following operations:
+Expected: 1000 samples, 50 groups of 20, 23 heads, positive-definite RF/surrogate covariance matrices, production predictions matching stored predictions within 0.002 m, recomputed pooled RF covariance matching the supplied matrix, independent-test RMSE approximately 1.792099 m, and five vectorized log posteriors matching independent dense Gaussian evaluations. These checks do not run long MCMC chains.
 
-1. checks the integrity and expected structure of the synthetic dataset;
-2. runs a KD-tree mapping example;
-3. trains a compact PA-DNN surrogate when PyTorch is available;
-4. generates demonstration sensitivity-analysis outputs;
-5. writes all generated results to `outputs/minimal_demo/`.
-
-If PyTorch is unavailable, the demonstration trains a compact Random Forest model as a fallback, allowing the public workflow to be smoke-tested without PyTorch.
-
-Run individual workflow steps:
+A short field MCMC example is:
 
 ```bash
-python scripts/00_check_dataset.py
-python scripts/01_demo_kdtree_mapping.py
-python scripts/02_train_padnn.py --epochs 100
-python scripts/03_compare_surrogates.py
-python scripts/04_run_mcmc_inversion.py --steps 1000
-python scripts/05_run_sensitivity_analysis.py
-python scripts/06_reproduce_figures.py
+python analysis/37C_Run_Field_Likelihood_Ablation.py --case A4_full_sigma_rep --mode smoke
 ```
 
-All generated outputs are written to:
-
-```text
-outputs/
-```
-
-Run the lightweight integrity tests:
+A short independent synthetic example is:
 
 ```bash
-pytest
+python analysis/37B_Run_Synthetic_Likelihood_Ablation.py --case A3_obs_rf_surr_bias --mode smoke --truth-id 1
 ```
 
-## Synthetic demonstration data
+Smoke mode uses 64 walkers, 300 steps and 100 burn-in steps. Successful execution verifies software operation; these short chains are not expected to meet the publication convergence targets.
 
-The main public demonstration dataset is:
+## Reproduce numerical analyses
 
-```text
-data/Final_ML_Dataset.csv
-```
+The original production settings are retained unless an environment override is explicitly supplied.
 
-The dataset contains six synthetic input parameters:
+1. `analysis/30_Train_GroupMean_DNN_CorrectedRF_FinalGW.py`: independent-test DNN training with the frozen 35/7/8 group split. Exports weights, scalers, training history, predictions and metrics.
+2. `analysis/31_5Fold_OOF_SurrogateError_CorrectedRF_FinalGW.py`: five-fold group-level OOF predictions; residual bias defined as numerical group mean minus DNN; raw and Ledoit-Wolf covariance; final all-50-group production model. Run after step 1 for the selected training epoch count. The published all-50 model uses 253 epochs.
+3. `analysis/36A_Final_Field_MCMC_Convergence_Strengthening.py`: field hierarchical inversion of six physical parameters and sigma_rep, using 64 walkers, 50000 steps and 10000 burn-in steps. Sigma_rep has a HalfNormal(10 m) prior; observation standard deviation is 0.5 m.
+4. `analysis/36B_Final_Independent_Synthetic_MCMC_Strengthening.py`: six-dimensional inversion for all three independent synthetic truths, without sigma_rep.
+5. `analysis/37B_Run_Synthetic_Likelihood_Ablation.py` and `analysis/37C_Run_Field_Likelihood_Ablation.py`: controlled error-component ablations. Use `--help` for case names and `--mode full` or `--mode extended` for long runs.
+6. `analysis/37D_Summarize_Likelihood_Ablation.py`: collect full/extended ablation results into CSV summary tables.
 
-* `log10_K_Lower`
-* `log10_K_Middle`
-* `log10_K_Upper`
-* `COV`
-* `dh`
-* `dv`
+Steps 3–6 can use the included models and covariances without retraining. Retraining changes model artifacts and subsequent posterior results; use a separate working copy when comparing against the included reference results. GPU/library differences can affect numerical results. Evaluate the saved diagnostics rather than assuming convergence from the step count.
 
-It also contains 23 synthetic hydraulic-head response columns with identifiers beginning with `zk`.
+Scripts locate inputs relative to their own directory. `GHB_WORK_DIR` optionally redirects the analysis root to a copied directory. For short tests of scripts 30/36A/36B, optional integer overrides are `GHB_MAX_EPOCHS`, `GHB_N_STEPS`, `GHB_BURN_IN`, `GHB_N_PRESCREEN`, `GHB_TOP_POOL` and `GHB_N_PP`. Keep burn-in smaller than the number of steps and the initial candidate pool at least as large as the walker count. These overrides change computation length; they are not the settings used to obtain the paper's reported results.
 
-These identifiers are retained as generic column names required by the public workflow. They do not correspond to publicly disclosed real-world boreholes or monitoring locations.
+## Inputs and outputs
 
-The values in the public dataset are synthetic and are intended only for:
+| Location | Contents |
+|---|---|
+| `analysis/Final_ML_Dataset_CorrectedRF_FinalGW.csv` | 1000 numerical realizations, group/realization identifiers, six inputs and 23 hydraulic-head outputs |
+| `analysis/Group_Mean_Dataset_50_CorrectedRF_FinalGW.csv` | Conditional means used as DNN targets |
+| `analysis/Group_Split_35_7_8_CorrectedRF.csv` | Frozen parameter-group assignments; no realization-level train/test leakage |
+| `analysis/Sigma_RF_Pooled_23x23_CorrectedRF_FinalGW.csv` | Pooled within-group covariance, 950 residual degrees of freedom |
+| `analysis/Step7_GroupMean_DNN_CorrectedRF_FinalGW/` | Independent-test model, scalers and numerical training/test results |
+| `analysis/Step8_5Fold_OOF_SurrogateError_CorrectedRF_FinalGW/` | OOF residuals, bias, covariances and production model |
+| `analysis/synthetic/` | Three independent truth parameters and extracted/noisy synthetic heads |
+| `analysis/36A_Final_Field_MCMC_Convergence_Strengthening.py` | Field observation values and production prior/settings |
+| `reference_results/` | Compact numerical reference results from original runs; not outputs of release smoke tests |
+| `matlab/inputs/` | Site model template and layer classification points |
 
-* software testing;
-* demonstration of data-processing procedures;
-* surrogate-model training examples;
-* verification of Bayesian-inversion scripts;
-* sensitivity-analysis demonstrations.
+Input order: log10_K_Lower, log10_K_Middle, log10_K_Upper, COV, dh, dv. The first three are base-10 logarithms of hydraulic conductivity in m/s; COV is dimensionless; horizontal/vertical correlation lengths dh/dv are in metres. Outputs zk101 through zk410 follow the explicit 23-borehole order in the source. Hydraulic heads, residual biases and standard deviations are in metres; covariance entries are in square metres.
 
-The synthetic dataset must not be interpreted as representing the original engineering site or its measured responses.
+Field outputs are written under `analysis/Step12A_Final_Field_MCMC_Strengthened/`; synthetic validation outputs under `analysis/synthetic/Step11_Independent_Validation/Step12B_Final_Independent_MCMC_Strengthened/`. They include parameter HDIs, MAP/mean/median estimates, samples, Rhat/ESS diagnostics, and 95% posterior predictive bounds and coverage. Ablation outputs are under `analysis/Step13_Likelihood_Ablation_CorrectedRF_FinalGW/`.
 
-Additional information is provided in:
+## Finite-element data regeneration
 
-```text
-metadata/data_dictionary.csv
-data/README_demo_dataset.md
-docs/workflow.md
-```
+In MATLAB, run `matlab/a_27B_Regenerate_Corrected_RF_FinalGW_1000.m`. Its default `MODE = 'SMOKE'` prepares a limited test; change to `ALL` after verifying the test to prepare all 1000 inputs. The script uses the fixed 50 parameter groups, corrected V2 generator, 20×20×25 reference grid, 100 material bins and fixed final groundwater boundary. Required helper functions and template/layer inputs are included. Job submission scripts are generated by MATLAB. Execute them with your separately licensed Abaqus installation.
 
-## MATLAB random-field workflow
+After ODBs are generated, run `abaqus python analysis/28_Extract_Corrected_RF_FinalGW_1000_Heads.py`. Set `GHB_ODB_DIR` if your ODB directory differs from the default generated INP directory. Extraction uses H = z + POR/9810 and writes head/mapping/status tables under `analysis/abaqus_extraction/`. The included final ML dataset already supplies the downstream numerical responses, so Abaqus is unnecessary for DNN and inversion reproduction.
 
-The generic finite-element random-field preparation workflow is provided in:
+Large ODB databases and the full field posterior CSV are omitted to keep the repository compact. The supplied model/data permit regeneration of posterior samples. MATLAB/Abaqus generation is provided but was not rerun during this release audit; exact reproduction of all solver outputs therefore remains unverified. The release audit checked the Python model/data calculations and shortened execution paths, not fresh 50000-step production chains.
 
-```text
-matlab_random_field_generation/
-```
+## License and citation
 
-This directory contains non-confidential MATLAB scripts for:
-
-* stratified hydraulic-conductivity random-field generation;
-* element-centroid mapping;
-* generic Abaqus `.inp` file preparation;
-* generated-file verification;
-* optional Abaqus batch submission.
-
-Project-specific Abaqus templates, original finite-element meshes, generated simulation inputs, result databases, and confidential engineering files are intentionally excluded from the public repository.
-
-Users who wish to apply the workflow to their own model must provide their own Abaqus template input file, commonly named:
-
-```text
-Job-0.inp
-```
-
-The public Python demonstration workflow does not require Abaqus.
-
-See the following file for a script-by-script description:
-
-```text
-matlab_random_field_generation/README.md
-```
-
-## Legacy scripts
-
-The `legacy/` directory contains archived non-confidential scripts retained for methodological traceability and compatibility with the original research workflow.
-
-These scripts are not required to run the minimal public demonstration. No confidential engineering data or proprietary project files should be stored in this directory.
-
-## Code and data availability
-
-The original engineering dataset used in the study cannot be made publicly available because it contains confidential project information and is subject to third-party data-use restrictions.
-
-The source code, synthetic demonstration dataset, example configuration files, and workflow scripts are publicly available in this repository:
-
-```text
-https://github.com/rainy-wudi/GeoHydroBayes3D-Code
-```
-
-A versioned archive of the public code package will be made available through Zenodo. The final Zenodo DOI should be added here after the corresponding release has been successfully archived.
-
-A manuscript-ready code and data availability statement is also provided in:
-
-```text
-docs/code_availability_statement.md
-```
-
-## Citation
-
-When using the source code or synthetic demonstration workflow, please cite the associated manuscript and the archived Zenodo release.
-
-A machine-readable citation file is provided in:
-
-```text
-CITATION.cff
-```
-
-## License
-
-The source code in this repository is released under the MIT License. See:
-
-```text
-LICENSE
-```
-
-The MIT License applies to the source code only.
-
-The synthetic demonstration dataset is provided solely for software verification, educational use, and demonstration of the public computational workflow. It contains no original engineering measurements or confidential project information.
-
-The original engineering dataset is not included in this repository, is not covered by the MIT License, and remains subject to the applicable confidentiality and third-party data-use restrictions.
+MIT license; see `LICENSE`. Cite the manuscript title and authors above, and identify release v2.0.0 when describing this code. `CITATION.cff` provides software metadata. See `docs/CODE_AVAILABILITY.md` for the manuscript statement and `docs/VALIDATION.md` for the release checks.

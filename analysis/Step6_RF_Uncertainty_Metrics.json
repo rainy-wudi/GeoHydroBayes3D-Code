@@ -1,0 +1,14 @@
+{
+  "n_parameter_groups": 50,
+  "realizations_per_group": 20,
+  "pooled_covariance_dof": 950,
+  "mean_RF_STD_m": 1.3264288837522282,
+  "min_RF_STD_m": 0.9108164478678176,
+  "max_RF_STD_m": 1.7027838973558114,
+  "min_RF_STD_borehole": "zk106",
+  "max_RF_STD_borehole": "zk104",
+  "Sigma_RF_condition_number": 2757.5143885282737,
+  "Sigma_RF_min_eigenvalue": 0.009155953589519652,
+  "Sigma_RF_max_eigenvalue": 25.247673763797295,
+  "Sigma_RF_positive_definite": true
+}

@@ -1,0 +1,34 @@
+{
+  "A0_obs_only": {
+    "use_sigma_rf": false,
+    "use_sigma_surr": false,
+    "use_surrogate_bias": false,
+    "use_sigma_rep": false
+  },
+  "A1_obs_rf": {
+    "use_sigma_rf": true,
+    "use_sigma_surr": false,
+    "use_surrogate_bias": false,
+    "use_sigma_rep": false
+  },
+  "A2_obs_rf_surr": {
+    "use_sigma_rf": true,
+    "use_sigma_surr": true,
+    "use_surrogate_bias": false,
+    "use_sigma_rep": false
+  },
+  "A3_obs_rf_surr_bias": {
+    "use_sigma_rf": true,
+    "use_sigma_surr": true,
+    "use_surrogate_bias": true,
+    "use_sigma_rep": false
+  },
+  "A4_full_sigma_rep": {
+    "use_sigma_rf": true,
+    "use_sigma_surr": true,
+    "use_surrogate_bias": true,
+    "use_sigma_rep": true,
+    "sigma_rep_prior": "HalfNormal",
+    "sigma_rep_scale_m": 10.0
+  }
+}
