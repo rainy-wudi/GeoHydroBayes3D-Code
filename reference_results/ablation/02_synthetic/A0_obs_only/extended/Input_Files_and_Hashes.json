@@ -1,0 +1,52 @@
+[
+  {
+    "path": "ablation_cases.json",
+    "size_bytes": 776,
+    "sha256": "7ec88261e9cf65b63e43d1b3aca68563a57cb65eea7d39e76b83f19e0ecd0a08"
+  },
+  {
+    "path": "Sigma_RF_Pooled_23x23_CorrectedRF_FinalGW.csv",
+    "size_bytes": 9571,
+    "sha256": "a423104156d5c7192de238099684803e2126c6f752ed82a3632d9f235db2837f"
+  },
+  {
+    "path": "Sigma_surr_LedoitWolf_23x23_CorrectedRF.csv",
+    "size_bytes": 10183,
+    "sha256": "de50ff2fd2361dcea4b03ba572bb54fba54752d771f822e3fd7080aa26d975bf"
+  },
+  {
+    "path": "Surrogate_Bias_Vector_CorrectedRF.csv",
+    "size_bytes": 657,
+    "sha256": "be63c7af094a88afe500fa6bf688f68435066ec5644a2bb291025ea8c5196999"
+  },
+  {
+    "path": "GroupMean_DNN_All50_CorrectedRF_253epochs.pth",
+    "size_bytes": 24408,
+    "sha256": "d7eda67ab7576021451545983799a9df16454c48724063d9926fc67aa044cf47"
+  },
+  {
+    "path": "scaler_X_All50_CorrectedRF.pkl",
+    "size_bytes": 759,
+    "sha256": "e22b248f2aa6f5f9e90b9799168842c28a3ff7668ef262bde7b4ed196ab23993"
+  },
+  {
+    "path": "scaler_Y_All50_CorrectedRF.pkl",
+    "size_bytes": 1151,
+    "sha256": "cc45bca395f794903b662b99ffb500ce8481fea338c536bbe0299adeaa501ac4"
+  },
+  {
+    "path": "Truth_Parameters_3_CorrectedRF_V2.csv",
+    "size_bytes": 694,
+    "sha256": "38b6511a00c1eb81cf67b1f7728e5ffd96db0b8d54b6f5de51086dab05481565"
+  },
+  {
+    "path": "Truth_Heads_Raw_Abaqus_3x23.csv",
+    "size_bytes": 1537,
+    "sha256": "5667b78408dc662de5b8d918e38ad67c37c19eb53f663289fead77253d3a57fd"
+  },
+  {
+    "path": "Truth_Synthetic_Observations_3x23.csv",
+    "size_bytes": 1468,
+    "sha256": "5ea1328ab6eac4634709c9cbc6d3487c40fd2a52ae4c6f95a061839257239666"
+  }
+]
