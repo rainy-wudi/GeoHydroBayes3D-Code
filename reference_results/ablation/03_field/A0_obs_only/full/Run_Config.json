@@ -1,0 +1,57 @@
+{
+  "case": {
+    "use_sigma_rf": false,
+    "use_sigma_surr": false,
+    "use_surrogate_bias": false,
+    "use_sigma_rep": false,
+    "case_name": "A0_obs_only",
+    "optimized_init": true
+  },
+  "mode": "full",
+  "seed": 42,
+  "settings": {
+    "n_walkers": 64,
+    "n_steps": 50000,
+    "burn_in": 10000,
+    "n_prescreen": 30000,
+    "prescreen_batch": 2048,
+    "top_pool": 640,
+    "n_pp": 10000,
+    "csv_thin": 20
+  },
+  "x_cols": [
+    "log10_K_Lower",
+    "log10_K_Middle",
+    "log10_K_Upper",
+    "COV",
+    "dh",
+    "dv"
+  ],
+  "y_cols": [
+    "zk101",
+    "zk102",
+    "zk103",
+    "zk104",
+    "zk105",
+    "zk106",
+    "zk107",
+    "zk108",
+    "zk109",
+    "zk110",
+    "zk120",
+    "zk131",
+    "zk132",
+    "zk133",
+    "zk134",
+    "zk135",
+    "zk136",
+    "zk137",
+    "zk138",
+    "zk139",
+    "zk140",
+    "zk141",
+    "zk410"
+  ],
+  "sigma_obs_m": 0.5,
+  "device": "cpu"
+}
