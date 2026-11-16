@@ -1,0 +1,20 @@
+{
+  "case_name": "A0_obs_only",
+  "mode": "extended",
+  "truth_count": 3,
+  "parameter_95_HDI_hits": 13,
+  "parameter_95_HDI_total": 18,
+  "parameter_95_HDI_coverage_percent": 72.22222222222221,
+  "synthetic_observation_PP95_coverage_percent": 85.5072463768116,
+  "raw_Abaqus_PP95_coverage_percent": 97.10144927536231,
+  "mean_MAP_RMSE_to_observation_m": 0.6475098459046851,
+  "mean_MAP_RMSE_to_raw_Abaqus_m": 0.45721937802383067,
+  "mean_PP95_width_m": 2.1029909414876196,
+  "mean_HDI95_width_contraction": 0.4776912202496643,
+  "mean_posterior_SD_ratio_to_prior_SD": 0.5386386542808819,
+  "mean_acceptance_fraction": 0.1338806510416667,
+  "max_split_Rhat": 1.0032587466479663,
+  "max_rank_normalized_split_Rhat": 1.003075405134152,
+  "min_ESS": 23026.753215355453,
+  "all_convergence_pass": true
+}

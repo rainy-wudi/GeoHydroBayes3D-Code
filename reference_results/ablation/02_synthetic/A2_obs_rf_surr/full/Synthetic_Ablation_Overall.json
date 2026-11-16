@@ -1,0 +1,20 @@
+{
+  "case_name": "A2_obs_rf_surr",
+  "mode": "full",
+  "truth_count": 3,
+  "parameter_95_HDI_hits": 18,
+  "parameter_95_HDI_total": 18,
+  "parameter_95_HDI_coverage_percent": 100.0,
+  "synthetic_observation_PP95_coverage_percent": 100.0,
+  "raw_Abaqus_PP95_coverage_percent": 100.0,
+  "mean_MAP_RMSE_to_observation_m": 1.00223531361611,
+  "mean_MAP_RMSE_to_raw_Abaqus_m": 1.022337611509534,
+  "mean_PP95_width_m": 10.148661841214858,
+  "mean_HDI95_width_contraction": 0.23371887041791023,
+  "mean_posterior_SD_ratio_to_prior_SD": 0.7836413007875469,
+  "mean_acceptance_fraction": 0.32712270833333335,
+  "max_split_Rhat": 1.0059849128071625,
+  "max_rank_normalized_split_Rhat": 1.0056261643897908,
+  "min_ESS": 12494.991909126915,
+  "all_convergence_pass": true
+}
